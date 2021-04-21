@@ -116,7 +116,7 @@ public class buyer
         	 {return "Error while connecting to the database for updating."; }
          
         	 // create a prepared statement
-        	 String query = "UPDATE buyers SET buyerName=?,buyerContactNo=?,buyerEmail=?,WHERE buyerID=?";
+        	 String query = "UPDATE buyers SET buyerName=?,buyerContactNo=?,buyerEmail=?WHERE buyerID=?";
         	 PreparedStatement preparedStmt = con.prepareStatement(query);
          
         	 // binding values
