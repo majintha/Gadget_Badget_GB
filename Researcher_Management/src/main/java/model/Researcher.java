@@ -15,7 +15,9 @@ public class Researcher { //A common method to connect to the DB
 	 con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test?useTimezone=true&serverTimezone=UTC", "root", "");
 	 }
 	 catch (Exception e)
-	 {e.printStackTrace();}
+	 {
+		 e.printStackTrace();
+		 }
 	 return con;
 	 }
 	public String insertResearcher(String name, String email, String number, String address)
@@ -25,10 +27,11 @@ public class Researcher { //A common method to connect to the DB
 	 {
 	 Connection con = connect();
 	 if (con == null)
-	 {return "Error while connecting to the database for inserting."; }
+	 {
+		 return "Error while connecting to the database for inserting.";
+	 }
 	 // create a prepared statement
-	 String query = " insert into researcher(`researcherID`,`researcherName`,`researcherEmail`,`researcherNumber`,`researcherAddress`)"
-	 + " values (?, ?, ?, ?, ?)";
+	 String query = " insert into researcher(`researcherID`,`researcherName`,`researcherEmail`,`researcherNumber`,`researcherAddress`)" + " values (?, ?, ?, ?, ?)";
 	 PreparedStatement preparedStmt = con.prepareStatement(query);
 	 // binding values
 	 preparedStmt.setInt(1, 0);
@@ -43,11 +46,13 @@ public class Researcher { //A common method to connect to the DB
 	 }
 	 catch (Exception e)
 	 {
-	 output = "Error while inserting the researchers.";
+	 output = "Error while inserting the researcher.";
 	 System.err.println(e.getMessage());
 	 }
 	 return output;
 	 }
+	//
+	//
 	// read
 	public String readResearchers()
 	 {
@@ -107,7 +112,7 @@ public class Researcher { //A common method to connect to the DB
 		 if (con == null)
 		 {return "Error while connecting to the database for updating."; }
 		 // create a prepared statement
-		 String query = "UPDATE researchers SET researcherName=?,researcherEmail=?,researcherNumber=?,researcherAddress=?WHERE researcherID=?";
+		 String query = "UPDATE researcher SET researcherName=?,researcherEmail=?,researcherNumber=?,researcherAddress=?WHERE researcherID=?";
 		 PreparedStatement preparedStmt = con.prepareStatement(query);
 		 // binding values
 		 preparedStmt.setString(1, name);
@@ -136,7 +141,7 @@ public class Researcher { //A common method to connect to the DB
 		 if (con == null)
 		 {return "Error while connecting to the database for deleting."; }
 		 // create a prepared statement
-		 String query = "delete from researchers where researcherID=?";
+		 String query = "delete from researcher where researcherID=?";
 		 PreparedStatement preparedStmt = con.prepareStatement(query);
 		 // binding values
 		 preparedStmt.setInt(1, Integer.parseInt(researcherID));
