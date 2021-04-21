@@ -20,7 +20,7 @@ public class Researcher { //A common method to connect to the DB
 		 }
 	 return con;
 	 }
-	public String insertResearcher(String name, String email, String number, String address)
+	public String insertResearcher(String name, String email, String number, String address, String productType, String reDate)
 	 {
 	 String output = "";
 	 try
@@ -31,7 +31,7 @@ public class Researcher { //A common method to connect to the DB
 		 return "Error while connecting to the database for inserting.";
 	 }
 	 // create a prepared statement
-	 String query = " insert into researcher(`researcherID`,`researcherName`,`researcherEmail`,`researcherNumber`,`researcherAddress`)" + " values (?, ?, ?, ?, ?)";
+	 String query = " insert into researcher(`researcherID`,`researcherName`,`researcherEmail`,`researcherNumber`,`researcherAddress`,`researcherProductType`,`researcherReDate`)" + " values (?, ?, ?, ?, ?, ?, ?)";
 	 PreparedStatement preparedStmt = con.prepareStatement(query);
 	 // binding values
 	 preparedStmt.setInt(1, 0);
@@ -39,6 +39,8 @@ public class Researcher { //A common method to connect to the DB
 	 preparedStmt.setString(3, email);
 	 preparedStmt.setString(4, number);
 	 preparedStmt.setString(5, address);
+	 preparedStmt.setString(6, productType);
+	 preparedStmt.setString(7, reDate);
 	// execute the statement
 	 preparedStmt.execute();
 	 con.close();
@@ -61,11 +63,13 @@ public class Researcher { //A common method to connect to the DB
 	 {
 	 Connection con = connect();
 	 if (con == null)
-	 {return "Error while connecting to the database for readingcz."; }
+	 {return "Error while connecting to the database for reading."; }
 	 // Prepare the html table to be displayed
 	 output = "<table border='1'><tr><th>Researcher Name</th><th>Researcher Email</th>" +
 	 "<th>Researcher Number</th>" +
 	 "<th>Researcher Address</th>" +
+	 "<th>Researcher Product Type</th>" +
+	 "<th>Researcher Registed Date</th>" +
 	 "<th>Update</th><th>Remove</th></tr>";
 
 	 String query = "select * from researcher";
@@ -79,11 +83,15 @@ public class Researcher { //A common method to connect to the DB
 		 String researcherEmail = rs.getString("researcherEmail");
 		 String researcherNumber = rs.getString("researcherNumber");
 		 String researcherAddress = rs.getString("researcherAddress");
+		 String researcherProductType = rs.getString("researcherProductType");
+		 String researcherReDate = rs.getString("researcherReDate");
 	 // Add into the html table
 		 output += "<tr><td>" + researcherName + "</td>";
 		 output += "<td>" + researcherEmail + "</td>";
 		 output += "<td>" + researcherNumber + "</td>";
 		 output += "<td>" + researcherAddress + "</td>";
+		 output += "<td>" + researcherProductType + "</td>";
+		 output += "<td>" + researcherReDate + "</td>";
 	 // buttons
 		 output += "<td><input name='btnUpdate' type='button' value='Update'class='btn btn-secondary'></td>"
 				 + "<td><form method='post' action='researchers.jsp'>"
@@ -103,7 +111,7 @@ public class Researcher { //A common method to connect to the DB
 	 return output;
 	 } 
 	// update
-	public String updateResearcher(String ID, String name, String email, String number, String address)
+	public String updateResearcher(String ID, String name, String email, String number, String address, String productType, String reDate)
 	{
 		 String output = "";
 		 try
@@ -112,14 +120,16 @@ public class Researcher { //A common method to connect to the DB
 		 if (con == null)
 		 {return "Error while connecting to the database for updating."; }
 		 // create a prepared statement
-		 String query = "UPDATE researcher SET researcherName=?,researcherEmail=?,researcherNumber=?,researcherAddress=?WHERE researcherID=?";
+		 String query = "UPDATE researcher SET researcherName=?,researcherEmail=?,researcherNumber=?,researcherAddress=?,researcherProductType=?,researcherReDate=?WHERE researcherID=?";
 		 PreparedStatement preparedStmt = con.prepareStatement(query);
 		 // binding values
 		 preparedStmt.setString(1, name);
 		 preparedStmt.setString(2, email);
 		 preparedStmt.setString(3, number);
 		 preparedStmt.setString(4, address);
-		 preparedStmt.setInt(5, Integer.parseInt(ID));
+		 preparedStmt.setString(5, productType);
+		 preparedStmt.setString(6, reDate);
+		 preparedStmt.setInt(7, Integer.parseInt(ID));
 		 // execute the statement
 		 preparedStmt.execute();
 		 con.close();

@@ -26,13 +26,15 @@ public class ResearcherService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertResearcher(
-		 @FormParam("researcherName") String researcherName, 
-		 @FormParam("researcherEmail") String researcherEmail, 
-		 @FormParam("researcherNumber") String researcherNumber,
-		 @FormParam("researcherAddress") String researcherAddress)
+			@FormParam("researcherName") String researcherName, 
+			 @FormParam("researcherEmail") String researcherEmail, 
+			 @FormParam("researcherNumber") String researcherNumber,
+			 @FormParam("researcherAddress") String researcherAddress,
+			 @FormParam("researcherProductType") String researcherProductType,
+			 @FormParam("researcherReDate") String researcherReDate)
 		 
 	{ 
-		String output = researcherObj.insertResearcher(researcherName, researcherEmail, researcherNumber, researcherAddress); 
+		String output = researcherObj.insertResearcher(researcherName, researcherEmail, researcherNumber, researcherAddress, researcherProductType, researcherReDate); 
 		return output; 
 	}	
 	
@@ -50,9 +52,11 @@ public class ResearcherService {
 		 String researcherName = researcherObject.get("researcherName").getAsString(); 
 		 String researcherEmail = researcherObject.get("researcherEmail").getAsString(); 
 		 String researcherNumber = researcherObject.get("researcherNumber").getAsString();   
-		 String researcherAddress = researcherObject.get("researcherAddress").getAsString(); 
+		 String researcherAddress = researcherObject.get("researcherAddress").getAsString();
+		 String researcherProductType = researcherObject.get("researcherProductType").getAsString();
+		 String researcherReDate = researcherObject.get("researcherReDate").getAsString();
 		 
-		 String output = researcherObj.updateResearcher(researcherID, researcherName, researcherEmail, researcherNumber, researcherAddress); 
+		 String output = researcherObj.updateResearcher(researcherID, researcherName, researcherEmail, researcherNumber, researcherAddress, researcherProductType, researcherReDate); 
 		 return output; 
 	}
 	
