@@ -14,7 +14,7 @@ public class Funder {
 		{
 			Class.forName("com.mysql.jdbc.Driver");
 			//Provide the correct details: DBServer/DBName, username, password
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/test?useTimezone=true&serverTimezone=UTC", "root", "");
 		}
 		catch (Exception e)
 		{e.printStackTrace();}
@@ -23,7 +23,7 @@ public class Funder {
 	}
 	
 	
-	public String insertFunder(String code, String name, String email, String donation, String desc)
+	public String insertFunder(String name, String email, String tel, String gender, String donation, String desc)
 	{
 		String output = "";
 		
@@ -34,19 +34,20 @@ public class Funder {
 			{return "Error while connecting to the database for inserting."; }
 			
 			// create a prepared statement
-			String query = " insert into funders(`funderID`,`funderCode`,`funderName`,`funderEmail`,`funderDonation`,`funderDesc`)"
-			+ " values (?, ?, ?, ?, ?, ?)";
+			String query = " insert into funders(`funderID`,`funderName`,`funderEmail`, `funderTel`, `funderGender`,`funderDonation`,`funderDesc`)"
+			+ " values (?, ?, ?, ?, ?, ?, ?)";
 			
 			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
 			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, code);
-			preparedStmt.setString(3, name);
-			preparedStmt.setString(4, email);
-			preparedStmt.setDouble(5, Double.parseDouble(donation));
-			preparedStmt.setString(6, desc);
+			preparedStmt.setString(2, name);
+			preparedStmt.setString(3, email);
+			preparedStmt.setString(4, tel);
+			preparedStmt.setString(5, gender);
+			preparedStmt.setDouble(6, Double.parseDouble(donation));
+			preparedStmt.setString(7, desc);
 			
 			// execute the statement
 			preparedStmt.execute();
@@ -71,7 +72,7 @@ public class Funder {
 			{return "Error while connecting to the database for reading."; }
 			
 			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>Funder Code</th><th>Funder Name</th><th>Funder Email</th>" +
+			output = "<table border='1'><tr><th>Funder Name</th><th>Funder Email</th><th>Funder Telephone No</th><th>Funder Gender</th>" +
 					"<th>Donations</th>" +
 					"<th>Description</th>" +
 					"<th>Update</th><th>Remove</th></tr>";
@@ -84,16 +85,18 @@ public class Funder {
 			while (rs.next())
 			{
 				String funderID = Integer.toString(rs.getInt("funderID"));
-				String funderCode = rs.getString("funderCode");
 				String funderName = rs.getString("funderName");
 				String funderEmail = rs.getString("funderEmail");
+				String funderTel = rs.getString("funderTel");
+				String funderGender = rs.getString("funderGender");
 				String funderDonation = Double.toString(rs.getDouble("funderDonation"));
 				String funderDesc = rs.getString("funderDesc");
 				
 				// Add into the html table
-				output += "<tr><td>" + funderCode + "</td>";
-				output += "<td>" + funderName + "</td>";
+				output += "<tr><td>" + funderName + "</td>";
 				output += "<td>" + funderEmail + "</td>";
+				output += "<td>" + funderTel + "</td>";
+				output += "<td>" + funderGender + "</td>";
 				output += "<td>" + funderDonation + "</td>";
 				output += "<td>" + funderDesc + "</td>";
 				
@@ -116,7 +119,7 @@ public class Funder {
 		}
 		return output;
 	}
-	public String updateFunder(String ID, String code, String name, String email, String donation, String desc)
+	public String updateFunder(String ID, String name, String email, String tel, String gender, String donation, String desc)
 	{
 		String output = "";
 		try
@@ -127,17 +130,18 @@ public class Funder {
 			{return "Error while connecting to the database for updating."; }
 			
 			// create a prepared statement
-			String query = "UPDATE funders SET funderCode=?,funderName=?,funderEmail=?,funderDonation=?,funderDesc=? WHERE funderID=?";
+			String query = "UPDATE funders SET funderName=?,funderEmail=?,funderTel=?,funderGender=?,funderDonation=?,funderDesc=? WHERE funderID=?";
 			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
-			preparedStmt.setString(1, code);
-			preparedStmt.setString(2, name);
-			preparedStmt.setString(3, email);
-			preparedStmt.setDouble(4, Double.parseDouble(donation));
-			preparedStmt.setString(5, desc);
-			preparedStmt.setInt(6, Integer.parseInt(ID));
+			preparedStmt.setString(1, name);
+			preparedStmt.setString(2, email);
+			preparedStmt.setString(3, tel);
+			preparedStmt.setString(4, gender);
+			preparedStmt.setDouble(5, Double.parseDouble(donation));
+			preparedStmt.setString(6, desc);
+			preparedStmt.setInt(7, Integer.parseInt(ID));
 			
 			// execute the statement
 			preparedStmt.execute();

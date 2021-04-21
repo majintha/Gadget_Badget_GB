@@ -22,19 +22,20 @@ public class FunderService {
 	return funderObj.readFunders();
 	}
 	
-	@POST
+	@POST    
 	@Path("/") 
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
-	public String insertFunder(
-		 @FormParam("funderCode") String funderCode, 
+	public String insertFunder( 
 		 @FormParam("funderName") String funderName,
-		 @FormParam("funderEmail") String funderEmail, 
+		 @FormParam("funderEmail") String funderEmail,
+		 @FormParam("funderTel") String funderTel,
+		 @FormParam("funderGender") String funderGender,
 		 @FormParam("funderDonation") String funderDonation,
 		 @FormParam("funderDesc") String funderDesc)
 		 
 	{ 
-		String output = funderObj.insertFunder(funderCode,funderName,funderEmail,funderDonation,funderDesc); 
+		String output = funderObj.insertFunder(funderName,funderEmail,funderTel,funderGender,funderDonation,funderDesc); 
 		return output; 
 	}	
 	
@@ -48,14 +49,15 @@ public class FunderService {
 		//Convert the input string to a JSON object 
 		 JsonObject funderObject = new JsonParser().parse(funderData).getAsJsonObject(); 
 		//Read the values from the JSON object
-		 String funderID = funderObject.get("funderID").getAsString(); 
-		 String funderCode = funderObject.get("funderCode").getAsString(); 
+		 String funderID = funderObject.get("funderID").getAsString();  
 		 String funderName = funderObject.get("funderName").getAsString();
 		 String funderEmail = funderObject.get("funderEmail").getAsString();
+		 String funderTel = funderObject.get("funderTel").getAsString();
+		 String funderGender = funderObject.get("funderGender").getAsString();
 		 String funderDonation = funderObject.get("funderDonation").getAsString();   
 		 String funderDesc = funderObject.get("funderDesc").getAsString(); 
 		 
-		 String output = funderObj.updateFunder(funderID, funderCode, funderName, funderEmail, funderDonation, funderDesc); 
+		 String output = funderObj.updateFunder(funderID, funderName, funderEmail, funderTel ,funderGender , funderDonation, funderDesc); 
 		 return output; 
 	}
 	
