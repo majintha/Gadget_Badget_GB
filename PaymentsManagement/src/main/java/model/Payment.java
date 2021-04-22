@@ -16,7 +16,7 @@ private Connection connect()
  {e.printStackTrace();}
  return con;
  }
-public String insertPayment(String name, String cardno, String exdate, String cvc)
+public String insertPayment(String price, String name, String cardno, String exdate, String cvc)
  {
  String output = "";
  try
@@ -25,15 +25,16 @@ public String insertPayment(String name, String cardno, String exdate, String cv
  if (con == null)
  {return "Error while connecting to the database for inserting."; }
  // create a prepared statement
- String query = " insert into payments(`paymentID`,`paymentName`,`paymentCardNo`,`paymentExDate`,`paymentCvc`)"
- + " values (?, ?, ?, ?, ?)";
+ String query = " insert into payments(`paymentID`,`paymentPrice`, `paymentName`,`paymentCardNo`,`paymentExDate`,`paymentCvc`)"
+ + " values (?, ?, ?, ?, ?, ?)";
  PreparedStatement preparedStmt = con.prepareStatement(query);
  // binding values
  preparedStmt.setInt(1, 0);
- preparedStmt.setString(2, name);
- preparedStmt.setString(3, cardno);
- preparedStmt.setString(4, exdate);
- preparedStmt.setString(5, cvc);
+ preparedStmt.setDouble(2, Double.parseDouble(price)); 
+ preparedStmt.setString(3, name);
+ preparedStmt.setString(4, cardno);
+ preparedStmt.setString(5, exdate);
+ preparedStmt.setString(6, cvc);
 // execute the statement
  preparedStmt.execute();
  con.close();
@@ -55,7 +56,7 @@ public String readPayments()
  if (con == null)
  {return "Error while connecting to the database for reading."; }
  // Prepare the html table to be displayed
- output = "<table border='1'><tr><th>Name on Card</th><th>Card Number</th>" +
+ output = "<table border='1'><tr><th>Price</th><th>Name on Card</th><th>Card Number</th>" +
  "<th>Expire Date</th>" +
  "<th>CVC</th>" +
  "<th>Update</th><th>Remove</th></tr>";
@@ -67,12 +68,14 @@ public String readPayments()
  while (rs.next())
  {
  String paymentID = Integer.toString(rs.getInt("paymentID"));
+ String paymentPrice = Double.toString(rs.getDouble("paymentPrice")); 
  String paymentName = rs.getString("paymentName");
  String paymentCardNo = rs.getString("paymentCardNo");
  String paymentExDate = rs.getString("paymentExDate");
  String paymentCvc = rs.getString("paymentCvc");
  // Add into the html table
- output += "<tr><td>" + paymentName + "</td>";
+ output += "<tr><td>" + paymentPrice + "</td>";
+ output += "<td>" + paymentName + "</td>";
  output += "<td>" + paymentCardNo + "</td>";
  output += "<td>" + paymentExDate + "</td>";
  output += "<td>" + paymentCvc + "</td>";
@@ -94,7 +97,7 @@ public String readPayments()
  }
  return output;
  }
-public String updatePayment(String ID, String name, String cardno, String exdate, String cvc)
+public String updatePayment(String ID, String price, String name, String cardno, String exdate, String cvc)
 {
 	 String output = "";
 	 try
@@ -103,14 +106,15 @@ public String updatePayment(String ID, String name, String cardno, String exdate
 	 if (con == null)
 	 {return "Error while connecting to the database for updating."; }
 	 // create a prepared statement
-	 String query = "UPDATE payments SET paymentName=?,paymentCardNo=?,paymentExDate=?,paymentCvc=? WHERE paymentID=?";
+	 String query = "UPDATE payments SET paymentPrice=?,paymentName=?,paymentCardNo=?,paymentExDate=?,paymentCvc=? WHERE paymentID=?";
 	 PreparedStatement preparedStmt = con.prepareStatement(query);
 	 // binding values
-	 preparedStmt.setString(1, name);
-	 preparedStmt.setString(2, cardno);
-	 preparedStmt.setString(3, exdate);
-	 preparedStmt.setString(4, cvc);
-	 preparedStmt.setInt(5, Integer.parseInt(ID));
+	 preparedStmt.setDouble(1, Double.parseDouble(price)); 
+	 preparedStmt.setString(2, name);
+	 preparedStmt.setString(3, cardno);
+	 preparedStmt.setString(4, exdate);
+	 preparedStmt.setString(5, cvc);
+	 preparedStmt.setInt(6, Integer.parseInt(ID));
 	 // execute the statement
 	 preparedStmt.execute();
 	 con.close();
