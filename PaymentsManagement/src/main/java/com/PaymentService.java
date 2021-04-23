@@ -25,12 +25,13 @@ public String readPayments()
 @Path("/")
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 @Produces(MediaType.TEXT_PLAIN)
-public String insertPayment(@FormParam("paymentName") String paymentName,
+public String insertPayment(@FormParam("paymentPrice") String paymentPrice, 
+ @FormParam("paymentName") String paymentName,
  @FormParam("paymentCardNo") String paymentCardNo,
  @FormParam("paymentExDate") String paymentExDate,
  @FormParam("paymentCvc") String paymentCvc)
 {
- String output = paymentObj.insertPayment(paymentName, paymentCardNo, paymentExDate, paymentCvc);
+ String output = paymentObj.insertPayment(paymentPrice, paymentName, paymentCardNo, paymentExDate, paymentCvc);
 return output;
 }
 
@@ -43,13 +44,14 @@ public String updatePayment(String paymentData)
 	//Convert the input string to a JSON object 
 	 JsonObject paymentObject = new JsonParser().parse(paymentData).getAsJsonObject(); 
 	//Read the values from the JSON object
-	 String paymentID = paymentObject.get("paymentID").getAsString(); 
+	 String paymentID = paymentObject.get("paymentID").getAsString();
+	 String paymentPrice = paymentObject.get("paymentPrice").getAsString(); 
 	 String paymentName = paymentObject.get("paymentName").getAsString(); 
 	 String paymentCardNo = paymentObject.get("paymentCardNo").getAsString(); 
 	 String paymentExDate = paymentObject.get("paymentExDate").getAsString();   
 	 String paymentCvc = paymentObject.get("paymentCvc").getAsString(); 
 	 
-	 String output = paymentObj.updatePayment(paymentID, paymentName, paymentCardNo, paymentExDate, paymentCvc); 
+	 String output = paymentObj.updatePayment(paymentID, paymentPrice, paymentName, paymentCardNo, paymentExDate, paymentCvc); 
 	 return output; 
 }
 
