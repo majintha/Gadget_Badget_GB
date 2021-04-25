@@ -30,12 +30,14 @@ public class buyerService {
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED) 
 	@Produces(MediaType.TEXT_PLAIN) 
 	public String insertBuyer(
-		 @FormParam("buyerName") String buyerName, 
+		 @FormParam("buyerName") String buyerName,
+		 @FormParam("buyerGender") String buyerGender,
 		 @FormParam("buyerContactNo") String buyerContactNo, 
-		 @FormParam("buyerEmail") String buyerEmail)
+		 @FormParam("buyerEmail") String buyerEmail,
+		 @FormParam("buyerAddress") String buyerAddress)
 		 
 	{ 
-		String output = buyerObj.insertBuyer(buyerName, buyerContactNo, buyerEmail); 
+		String output = buyerObj.insertBuyer(buyerName, buyerGender, buyerContactNo, buyerEmail, buyerAddress); 
 		return output; 
 	}	
 	
@@ -52,10 +54,12 @@ public class buyerService {
         //Read the values from the JSON object
          String buyerID = buyerObject.get("buyerID").getAsString();
          String buyerName = buyerObject.get("buyerName").getAsString();
+         String buyerGender = buyerObject.get("buyerGender").getAsString();
          String buyerContactNo = buyerObject.get("buyerContactNo").getAsString();
-         String buyerEmail = buyerObject.get("buyerEmail").getAsString();  
+         String buyerEmail = buyerObject.get("buyerEmail").getAsString();
+         String buyerAddress = buyerObject.get("buyerAddress").getAsString();
         
-         String output = buyerObj.updateBuyer(buyerID, buyerName, buyerContactNo, buyerEmail);
+         String output = buyerObj.updateBuyer(buyerID, buyerName, buyerGender, buyerContactNo, buyerEmail, buyerAddress);
          return output;
     }
 	

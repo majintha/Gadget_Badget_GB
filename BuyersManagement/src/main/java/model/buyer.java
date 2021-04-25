@@ -21,7 +21,7 @@ public class buyer
 			return con; 
 	}
 	
-	public String insertBuyer(String name, String contactNo, String email) 
+	public String insertBuyer(String name, String gender, String contactNo, String email, String address) 
 	 { 
 		String output = ""; 
 		try
@@ -31,14 +31,16 @@ public class buyer
 			{return "Error while connecting to the database for inserting."; } 
 			
 			// create a prepared statement
-			String query = " insert into buyers(`buyerID`,`buyerName`,`buyerContactNo`,`buyerEmail`)" + " values (?, ?, ?, ?)"; 
+			String query = " insert into buyers(`buyerID`,`buyerName`,`buyerGender`,`buyerContactNo`,`buyerEmail`,`buyerAddress`)" + " values (?, ?, ?, ?, ?, ?)"; 
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			// binding values
 			preparedStmt.setInt(1, 0); 
 			preparedStmt.setString(2,name);
-			preparedStmt.setString(3,contactNo);
-			preparedStmt.setString(4,email);
+			preparedStmt.setString(3,gender);
+			preparedStmt.setString(4,contactNo);
+			preparedStmt.setString(5,email);
+			preparedStmt.setString(6,address);
 			 
 			// execute the statement
 			preparedStmt.execute(); 
@@ -64,9 +66,10 @@ public class buyer
 			{return "Error while connecting to the database for reading."; }
 			
 			// Prepare the html table to be displayed
-			output = "<table border='1'><tr><th>Buyer Name</th>" +
+			output = "<table border='1'><tr><th>Buyer Name</th>" + 
+					"<th>Buyer Gender</th>" +
 					"<th>Buyer Contact Number</th>" + 
-					"<th>Buyer Email</th>" +
+					"<th>Buyer Email</th>" +"<th>Buyer Address</th>" +
 					"<th>Update</th><th>Remove</th></tr>"; 
 	 
 			String query = "select * from buyers"; 
@@ -78,13 +81,17 @@ public class buyer
 			{ 
 				String buyerID = Integer.toString(rs.getInt("buyerID"));  
 				String buyerName = rs.getString("buyerName");  
+				String buyerGender = rs.getString("buyerGender");
 				String buyerContactNo = rs.getString("buyerContactNo");
 				String buyerEmail = rs.getString("buyerEmail");
+				String buyerAddress = rs.getString("buyerAddress");
 				
 				// Add into the html table
-				output += "<tr><td>" + buyerName + "</td>"; 
+				output += "<tr><td>" + buyerName + "</td>";
+				output += "<td>" + buyerGender + "</td>";
 				output += "<td>" + buyerContactNo + "</td>"; 
-				output += "<td>" + buyerEmail + "</td>"; 
+				output += "<td>" + buyerEmail + "</td>";
+				output += "<td>" + buyerAddress + "</td>";
 				
 				// buttons
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
@@ -106,7 +113,7 @@ public class buyer
 
 	}
 	
-	public String updateBuyer(String ID, String name, String contactNo, String email)
+	public String updateBuyer(String ID, String name, String gender, String contactNo, String email, String address)
     {
          String output = "";
          try
@@ -116,14 +123,16 @@ public class buyer
         	 {return "Error while connecting to the database for updating."; }
          
         	 // create a prepared statement
-        	 String query = "UPDATE buyers SET buyerName=?,buyerContactNo=?,buyerEmail=?WHERE buyerID=?";
+        	 String query = "UPDATE buyers SET buyerName=?,buyerGender=?,buyerContactNo=?,buyerEmail=?,buyerAddress=?WHERE buyerID=?";
         	 PreparedStatement preparedStmt = con.prepareStatement(query);
          
         	 // binding values
         	 preparedStmt.setString(1, name);
-        	 preparedStmt.setString(2, contactNo);
-        	 preparedStmt.setString(3, email);
-        	 preparedStmt.setInt(4, Integer.parseInt(ID));
+        	 preparedStmt.setString(2, gender);
+        	 preparedStmt.setString(3, contactNo);
+        	 preparedStmt.setString(4, email);
+        	 preparedStmt.setString(5, address);
+        	 preparedStmt.setInt(6, Integer.parseInt(ID));
          
         	 // execute the statement
         	 preparedStmt.execute();
